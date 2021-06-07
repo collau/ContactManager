@@ -4,12 +4,15 @@ package com.fishnco.contactmanager.data;
  * Create, Read, Update, Delete (CRUD)
  */
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.fishnco.contactmanager.model.Contact;
 import com.fishnco.contactmanager.util.Utility;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -59,5 +62,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         //Create a table again
         onCreate(db);
+    }
+
+    /*
+     * CRUD Operations
+     * Create
+     * Read
+     * Update
+     * Delete
+     */
+    //Add Contact
+    public void addContact(Contact contact) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //Id will be automatically populated
+        values.put(Utility.KEY_NAME, contact.getName());
+        values.put(Utility.KEY_PHONENO, contact.getPhoneNo());
+
+        //Insert to row
+        db.insert(Utility.TABLE_NAME, null, values);
+
+        //Close db connection, prevent things like memory leaks
+        db.close();
+    }
+
+    //Get a contact
+    public Contact getContact(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Cursor - iterate through and point to our database item
+        Cursor cursor = db.query(Utility.TABLE_NAME,
+                new String[]{Utility.KEY_ID, Utility.KEY_NAME, Utility.KEY_PHONENO},
+                Utility.KEY_ID + "=?", new String[]{String.valueOf(id)},
+                null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Contact contact = new Contact();
+        contact.setId(Integer.parseInt(cursor.getString(0)));
+        contact.setName(cursor.getString(1));
+        contact.setPhoneNo(cursor.getString(2));
+
+        cursor.close();
+
+        return contact;
     }
 }
