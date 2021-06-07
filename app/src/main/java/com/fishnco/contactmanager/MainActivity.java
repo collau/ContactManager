@@ -63,5 +63,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "onCreate: " + contact.getName());
             Log.e("MainActivity", "onCreate: " + contact.getPhoneNo());
         }
+
+        Log.e("Count", "onCreate: " + db.getCount());
     }
 }

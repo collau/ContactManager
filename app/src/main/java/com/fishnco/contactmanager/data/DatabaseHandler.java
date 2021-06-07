@@ -163,4 +163,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.delete(Utility.TABLE_NAME, Utility.KEY_ID + "=?", new String[]{String.valueOf(contact.getId())});
         db.close();
     }
+
+    //Get contacts count
+    public int getCount() {
+        String countQuery = "SELECT * FROM " + Utility.TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+
+        return cursor.getCount();
+    }
+
 }
