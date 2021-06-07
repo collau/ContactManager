@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 import com.fishnco.contactmanager.model.Contact;
 import com.fishnco.contactmanager.util.Utility;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     /**
@@ -109,5 +112,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
 
         return contact;
+    }
+
+    //Get all contacts
+    public List<Contact> getAllContacts() {
+        List<Contact> contactList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Select all contacts
+        String selectAll = "SELECT * FROM " + Utility.TABLE_NAME;
+        Cursor cursor = db.rawQuery(selectAll, null);
+
+        //Loop through data
+        if (cursor.moveToFirst()) {
+            do {
+                Contact contact = new Contact();
+                contact.setId(Integer.parseInt(cursor.getString(0)));
+                contact.setName(cursor.getString(1));
+                contact.setPhoneNo(cursor.getString(2));
+
+                //add contact object to our list
+                contactList.add(contact);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return contactList;
     }
 }
