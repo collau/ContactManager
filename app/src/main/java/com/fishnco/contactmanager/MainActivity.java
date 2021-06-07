@@ -38,15 +38,27 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "onCreate: " + contact.getPhoneNo());
         }
 
+        /*
         Contact c = db.getContact(1);
-        c.setName("Jeremiah");
-        c.setPhoneNo("2342");
+        c.setName("Jeremy");
+        c.setPhoneNo("99678254");
+        */
 
-        int updateRow = db.updateContact(c);
+//        int updateRow = db.updateContact(c);
 
-        List<Contact> contactList2 = db.getAllContacts();
+        contactList = db.getAllContacts();
 
-        for (Contact contact : contactList2) {
+        for (Contact contact : contactList) {
+            Log.e("MainActivity", "onCreate: " + contact.getId());
+            Log.e("MainActivity", "onCreate: " + contact.getName());
+            Log.e("MainActivity", "onCreate: " + contact.getPhoneNo());
+        }
+
+//        db.deleteContact(c);
+
+        contactList = db.getAllContacts();
+
+        for (Contact contact : contactList) {
             Log.e("MainActivity", "onCreate: " + contact.getId());
             Log.e("MainActivity", "onCreate: " + contact.getName());
             Log.e("MainActivity", "onCreate: " + contact.getPhoneNo());
