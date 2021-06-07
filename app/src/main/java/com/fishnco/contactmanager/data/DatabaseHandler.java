@@ -141,4 +141,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return contactList;
     }
+
+    //Update contact
+    //System will return index/id of row that was updated
+    public int updateContact(Contact contact) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Utility.KEY_NAME, contact.getName());
+        values.put(Utility.KEY_PHONENO, contact.getPhoneNo());
+
+        //update the row
+        //update (tablename, values, where id = ?)
+        return db.update(Utility.TABLE_NAME, values, Utility.KEY_ID + "=?", new String[]{String.valueOf(contact.getId())});
+    }
 }
