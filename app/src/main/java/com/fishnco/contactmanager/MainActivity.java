@@ -4,65 +4,72 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.fishnco.contactmanager.data.DatabaseHandler;
 import com.fishnco.contactmanager.model.Contact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private ListView listView;
+    private ArrayList<String> contactArrayList;
+    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        listView = findViewById(R.id.listview);
+        contactArrayList = new ArrayList<>();
 
         DatabaseHandler db = new DatabaseHandler(MainActivity.this);
 
-        //create contact object first
-        Contact jeremy = new Contact();
-        jeremy.setName("Jeremy");
-        jeremy.setPhoneNo("9985747374");
-//        db.addContact(jeremy);
+//        db.addContact(new Contact("Greg", "91645"));
+//        db.addContact(new Contact("James", "098765"));
+//        db.addContact(new Contact("Helena", "40678765"));
+//        db.addContact(new Contact("Carimo", "768345"));
+//        db.addContact(new Contact("Silo", "3445"));
+//        db.addContact(new Contact("Santos", "6665"));
+//        db.addContact(new Contact("Litos", "5344"));
+//        db.addContact(new Contact("Karate", "96534"));
+//        db.addContact(new Contact("Guerra", "158285"));
+//        db.addContact(new Contact("Gema", "78130"));
 
-        Contact jason = new Contact();
-        jason.setName("Jason");
-        jason.setPhoneNo("0877744");
-//        db.addContact(jason);
+//        db.addContact(new Contact("John", "7198237"));
+//        db.addContact(new Contact("Jack", "17826382"));
+//        db.addContact(new Contact("Jeffrey", "187263"));
+//        db.addContact(new Contact("Bryce","1982731"));
+//        db.addContact(new Contact("Fernando", "1283947"));
+//        db.addContact(new Contact("Vlad", "91827398"));
+//        db.addContact(new Contact("Kazuhiro", "10827380123"));
+//        db.addContact(new Contact("Jurickson", "98672934"));
 
         List<Contact> contactList = db.getAllContacts();
 
         for (Contact contact : contactList) {
-            Log.e("MainActivity", "onCreate: " + contact.getId());
             Log.e("MainActivity", "onCreate: " + contact.getName());
-            Log.e("MainActivity", "onCreate: " + contact.getPhoneNo());
+            // create arrayList
+            contactArrayList.add(contact.getName());
         }
 
-        /*
-        Contact c = db.getContact(1);
-        c.setName("Jeremy");
-        c.setPhoneNo("99678254");
-        */
+        // create array adapter
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contactArrayList);
 
-//        int updateRow = db.updateContact(c);
+        // add to our listview
+        listView.setAdapter(arrayAdapter);
 
-        contactList = db.getAllContacts();
-
-        for (Contact contact : contactList) {
-            Log.e("MainActivity", "onCreate: " + contact.getId());
-            Log.e("MainActivity", "onCreate: " + contact.getName());
-            Log.e("MainActivity", "onCreate: " + contact.getPhoneNo());
-        }
-
-//        db.deleteContact(c);
-
-        contactList = db.getAllContacts();
-
-        for (Contact contact : contactList) {
-            Log.e("MainActivity", "onCreate: " + contact.getId());
-            Log.e("MainActivity", "onCreate: " + contact.getName());
-            Log.e("MainActivity", "onCreate: " + contact.getPhoneNo());
-        }
+        // attach eventlistener to listview
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("List", "onItemClick: " + contactArrayList.get(position));
+            }
+        });
 
         Log.e("Count", "onCreate: " + db.getCount());
     }

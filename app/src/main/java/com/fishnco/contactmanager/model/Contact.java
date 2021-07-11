@@ -1,11 +1,18 @@
 package com.fishnco.contactmanager.model;
 
+import android.content.Context;
+
 public class Contact {
     private int     id;
     private String  name;
     private String  phoneNo;
 
     public Contact() {
+    }
+
+    public Contact(String name, String phoneNo) {
+        this.name = name;
+        this.phoneNo = phoneNo;
     }
 
     public Contact(int id, String name, String phoneNo) {
